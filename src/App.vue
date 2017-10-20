@@ -1,7 +1,7 @@
-<template>
-  <div id="app">
-    <router-view/>
-  </div>
+<template lang="pug">
+  #app
+    router-view
+
 </template>
 
 <script>
@@ -12,16 +12,16 @@ export default {
     if (!this.$store.getters['accounts/isAuthenticated']) { return }
     this.$store.dispatch('accounts/refreshToken')
       .catch((response) => this.$router.push({ path: '/login' }))
+  },
+
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters['accounts/isAuthenticated']
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style lang="scss">
+  @import 'assets/stylesheets/base';
 </style>

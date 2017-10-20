@@ -1,0 +1,29 @@
+.page-wrapper {
+  display: flex;
+  flex: 1 1 0%;
+  height: 100vh;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.card {
+  width: 500px;
+  padding: 3rem 4rem;
+  margin: 2rem auto;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+  border: 1px solid #e8e8e8;
+}
+
+.card__title {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #555459;
+}
+
+.bot10 {
+  margin-bottom: 10px;
+}

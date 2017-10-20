@@ -1,31 +1,32 @@
 import axios from '@/lib/axios'
 
-export const login = ({ commit }, params) => {
-  return axios.post('/sessions', params.form)
-    .then((response) => {
-      commit('setUser', response.data.data)
-      commit('setToken', { token: response.data.meta.token })
-    })
+const handleAuthentication = ({ commit, dispatch }, params) => {
+  commit('setUser', params.data)
+  commit('setToken', { token: params.meta.token })
+  dispatch('rooms/fetchUserRooms',
+    { userId: params.data.id },
+    { root: true }
+  )
 }
 
-export const logout = ({ commit }) => {
+export const login = (context, params) => {
+  return axios.post('/sessions', params.form)
+    .then((response) => handleAuthentication(context, response.data))
+}
+
+export const logout = (context) => {
   return axios.delete('/sessions')
     .then((response) => {
-      commit('removeToken')
+      context.commit('removeToken')
     })
 }
 
-export const signup = ({ commit }, params) => {
+export const signup = (context, params) => {
   return axios.post('/users', params.form)
-    .then((response) => {
-      commit('setUser', response.data.data)
-      commit('setToken', { token: response.data.meta.token })
-    })
+    .then((response) => handleAuthentication(context, response.data))
 }
 
-export const refreshToken = ({ commit }) => {
+export const refreshToken = (context) => {
   return axios.post('/sessions/refresh')
-    .then((response) => {
-      commit('setUser', response.data.data)
-    })
+    .then((response) => handleAuthentication(context, response.data))
 }

@@ -1,16 +1,15 @@
 <template lang="pug">
-  span
-    AppNavbar
+  AuthLayout
     SignUpForm
 </template>
 
 <script>
-import AppNavbar from '@/components/shared/navbar'
+import AuthLayout from './layouts/auth'
 import SignUpForm from '@/components/accounts/signup-form'
 
 export default {
   components: {
-    AppNavbar,
+    AuthLayout,
     SignUpForm
   }
 }

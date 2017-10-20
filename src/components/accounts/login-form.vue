@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss">
   .login-form {
-    max-width: 500px;
+    width: 500px;
     padding: 3rem 4rem;
     margin: 2rem auto;
   }
