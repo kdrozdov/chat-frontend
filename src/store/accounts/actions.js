@@ -1,4 +1,18 @@
 import axios from '@/lib/axios'
+import { Socket } from 'phoenix-socket'
+
+const BASE_URL = process.env.BASE
+const WEBSOCKET_URL = BASE_URL.replace(/(https|http)/, 'ws').replace('/api', '')
+
+const connectToSocket = ({ commit, token }) => {
+  const socket = new Socket(`${WEBSOCKET_URL}/socket`, {
+    params: { token },
+    logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) },
+    onConnOpen: () => { }
+  })
+  socket.connect()
+  commit('setSocket', { socket: socket })
+}
 
 const handleAuthentication = ({ commit, dispatch }, params) => {
   commit('setUser', params.data)
@@ -7,6 +21,7 @@ const handleAuthentication = ({ commit, dispatch }, params) => {
     { userId: params.data.id },
     { root: true }
   )
+  connectToSocket({ commit: commit, token: params.meta.token })
 }
 
 export const login = (context, params) => {
@@ -17,7 +32,7 @@ export const login = (context, params) => {
 export const logout = (context) => {
   return axios.delete('/sessions')
     .then((response) => {
-      context.commit('removeToken')
+      context.commit('removeSession')
     })
 }
 

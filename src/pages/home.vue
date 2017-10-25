@@ -1,5 +1,6 @@
 <template lang="pug">
-  AppLayout
+  span
+    AppNavbar
     .card
       h3.card__title Create a new room
       RoomForm
@@ -10,15 +11,15 @@
 </template>
 
 <script>
-import AppLayout from './layouts/application'
+import AppNavbar from '@/components/shared/navbar'
 import RoomForm from '@/components/rooms/form'
 import ListRooms from '@/components/rooms/list'
 
 export default {
   components: {
-    AppLayout,
     RoomForm,
-    ListRooms
+    ListRooms,
+    AppNavbar
   },
 
   mounted: function () {

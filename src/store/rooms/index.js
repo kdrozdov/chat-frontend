@@ -6,7 +6,10 @@ export default {
 
   state: {
     all: [],
-    userRooms: []
+    userRooms: [],
+    channel: null,
+    currentRoom: null,
+    messages: []
   },
 
   actions,

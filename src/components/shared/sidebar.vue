@@ -1,10 +1,10 @@
 <template lang="pug">
   .sidebar
-    a.sidebar-link(v-for="item in userRooms" v-bind:room="item" v-bind:key="item.id" href="#")
+    router-link.sidebar-link(v-for="item in userRooms" v-bind:to="roomUrl(item)" v-bind:room="item" v-bind:key="item.id")
       .sidebar__badge
         span {{ item.name.charAt(0) }}
 
-    a.sidebar-link(href="#")
+    router-link.sidebar-link(to="/")
       .sidebar__badge
         span.fa.fa-plus
 
@@ -21,6 +21,10 @@ export default {
     onLogout: function () {
       this.$store.dispatch('accounts/logout')
         .then(() => this.$router.push({ path: '/login' }))
+    },
+
+    roomUrl: function (room) {
+      return `/r/${room.id}`
     }
   },
 

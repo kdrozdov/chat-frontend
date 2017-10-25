@@ -6,12 +6,18 @@ export const setToken = (state, params) => {
   state.token = params.token
 }
 
-export const removeToken = (state, params) => {
+export const removeSession = (state, params) => {
   window.localStorage.removeItem('slacker_auth_token')
   axios.defaults.headers.common['Authorization'] = null
   state.token = null
+  state.username = null
+  state.socket = null
 }
 
 export const setUser = (state, params) => {
   state.username = params.username
+}
+
+export const setSocket = (state, params) => {
+  state.socket = params.socket
 }

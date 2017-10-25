@@ -3,18 +3,15 @@
     AppSidebar
 
     .content-wrapper
-      AppNavbar
-      slot
+      router-view
 
 </template>
 
 <script>
-import AppNavbar from '@/components/shared/navbar'
 import AppSidebar from '@/components/shared/sidebar'
 
 export default {
   components: {
-    AppNavbar,
     AppSidebar
   }
 }

@@ -7,7 +7,8 @@ export default {
 
   state: {
     token: window.localStorage.getItem('slacker_auth_token'),
-    username: null
+    username: null,
+    socket: null
   },
 
   actions,
