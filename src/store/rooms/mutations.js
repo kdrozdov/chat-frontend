@@ -25,7 +25,6 @@ const buildMessageIndexes = (messages) => {
 }
 
 export const connectedToChannel = (state, params) => {
-  console.log(params)
   state.channel = params.channel
   state.messages = params.messages
   state.messageIndexes = buildMessageIndexes(params.messages)
