@@ -58,11 +58,11 @@ export const leaveRoom = (state) => {
 export const addMessage = (state, params) => {
   let date = params.message.key
   let index = state.messageIndexes[date]
-  if (!index) {
+  if (index >= 0) {
+    state.messages[index].values.push(params.message)
+  } else {
     index = state.messages.unshift({ date: date, values: [params.message] })
     state.messageIndexes = buildMessageIndexes(state.messages)
-  } else {
-    state.messages[index].values.push(params.message)
   }
 }
 
