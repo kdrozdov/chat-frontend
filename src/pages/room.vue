@@ -1,18 +1,22 @@
 <template lang="pug">
   .room
-    RoomNavbar
-    Messages
-    MessageForm
+    RoomSidebar
+    .room__content
+      RoomNavbar
+      Messages
+      MessageForm
 </template>
 
 <script>
 import RoomNavbar from '@/components/rooms/navbar'
+import RoomSidebar from '@/components/rooms/sidebar'
 import Messages from '@/components/rooms/messages'
 import MessageForm from '@/components/rooms/messages/form'
 
 export default {
   components: {
     RoomNavbar,
+    RoomSidebar,
     Messages,
     MessageForm
   },
@@ -40,7 +44,12 @@ export default {
   .room {
     display: flex;
     flex: 1;
-    flex-direction: column;
     height: 100vh;
+  }
+
+  .room__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   }
 </style>

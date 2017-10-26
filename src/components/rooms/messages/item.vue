@@ -13,7 +13,9 @@ import moment from 'moment'
 import Avatar from './avatar'
 
 export default {
-  props: ['message'],
+  props: {
+    message: { type: Object, required: true }
+  },
 
   components: {
     Avatar

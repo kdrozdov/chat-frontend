@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss">
   .message-form {
-    padding: 0px 10px 10px 10px;
+    padding: 5px 10px 10px 10px;
     background: #fff;
     font-size: 1rem;
     line-height: 1.5;

@@ -1,4 +1,5 @@
 import axios from '@/lib/axios'
+import { Presence } from 'phoenix-socket'
 
 export const fetchAll = ({ commit }) => {
   return axios.get('/rooms')
@@ -32,6 +33,17 @@ export const connectToChannel = ({ commit, rootState }, params) => {
   return new Promise((resolve, reject) => {
     if (!rootState.accounts.socket) { reject(new Error('Socket not found')) }
     let channel = rootState.accounts.socket.channel(`rooms:${params.roomId}`)
+    let presences = {}
+
+    channel.on('presence_state', (state) => {
+      presences = Presence.syncState(presences, state)
+      syncPresentUsers(commit, presences)
+    })
+
+    channel.on('presence_diff', (diff) => {
+      presences = Presence.syncDiff(presences, diff)
+      syncPresentUsers(commit, presences)
+    })
 
     channel.on('message_created', (message) => {
       commit('addMessage', { message: message })
@@ -39,9 +51,7 @@ export const connectToChannel = ({ commit, rootState }, params) => {
 
     channel.join()
       .receive('ok', (response) => {
-        commit('setChannel', { channel: channel })
-        commit('setCurrentRoom', { currentRoom: response.room })
-        commit('setMessages', { messages: response.messages })
+        commit('connectedToChannel', { channel: channel, ...response })
         resolve(response)
       })
       .receive('error', ({ reason }) => {
@@ -64,4 +74,25 @@ export const createMessage = ({ commit, state }, params) => {
       .receive('ok', () => resolve())
       .receive('error', () => reject(new Error()))
   })
+}
+
+const syncPresentUsers = (commit, presences) => {
+  let presentUsers = []
+  Presence.list(presences, (id, { metas: [first] }) => first.user)
+          .map(user => presentUsers.push(user))
+  commit('setPresentUsers', { presentUsers: presentUsers })
+}
+
+export const loadOlderMessages = ({ commit, state }, params) => {
+  let dateMessages = state.messages[0]
+  if (!dateMessages) { return }
+  let lastSeenId = dateMessages.values[0].id
+
+  let url = `/rooms/${state.currentRoom.id}/messages?last_seen_id=${lastSeenId}`
+  commit('setLoadingOlderMessages', { loadingOlderMessages: true })
+  return axios.get(url)
+    .then((response) => {
+      commit('addMessages', { messages: response.data.data })
+      commit('setLoadingOlderMessages', { loadingOlderMessages: false })
+    })
 }

@@ -9,7 +9,11 @@ export default {
     userRooms: [],
     channel: null,
     currentRoom: null,
-    messages: []
+    messages: [],
+    messageIndexes: {},
+    loadingOlderMessages: false,
+    presentUsers: [],
+    pagination: {}
   },
 
   actions,
