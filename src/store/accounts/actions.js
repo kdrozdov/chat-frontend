@@ -4,14 +4,21 @@ import { Socket } from 'phoenix-socket'
 const BASE_URL = process.env.BASE
 const WEBSOCKET_URL = BASE_URL.replace(/(https|http)/, 'ws').replace('/api', '')
 
-const connectToSocket = ({ commit, token }) => {
-  const socket = new Socket(`${WEBSOCKET_URL}/socket`, {
-    params: { token },
-    logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) },
-    onConnOpen: () => { }
+export const connectToSocket = ({ commit, state }) => {
+  return new Promise((resolve, reject) => {
+    const socket = new Socket(`${WEBSOCKET_URL}/socket`, {
+      params: { token: state.token },
+      logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) }
+    })
+    socket.onOpen(function () {
+      commit('setSocket', { socket: socket })
+      resolve()
+    })
+    socket.onError(function () {
+      reject(new Error('Failed to connect socket'))
+    })
+    socket.connect()
   })
-  socket.connect()
-  commit('setSocket', { socket: socket })
 }
 
 const handleAuthentication = ({ commit, dispatch }, params) => {
@@ -21,7 +28,7 @@ const handleAuthentication = ({ commit, dispatch }, params) => {
     { userId: params.data.id },
     { root: true }
   )
-  connectToSocket({ commit: commit, token: params.meta.token })
+  // connectToSocket({ commit: commit }, { token: params.meta.token })
 }
 
 export const login = (context, params) => {

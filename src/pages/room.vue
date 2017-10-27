@@ -22,20 +22,32 @@ export default {
   },
 
   mounted: function () {
-    this.$store
-      .dispatch('rooms/connectToChannel', { roomId: this.$route.params.id })
-      .catch(() => this.$router.push('/'))
+    if (!this.$store.state.accounts.socket) {
+      this.$store.dispatch('accounts/connectToSocket')
+        .then(() => this.connectToChannel(this.$route.params.id))
+    } else {
+      this.connectToChannel(this.$route.params.id)
+    }
   },
 
   beforeRouteUpdate: function (to, from, next) {
     this.$store.dispatch('rooms/leaveChannel')
-    this.$store.dispatch('rooms/connectToChannel', { roomId: to.params.id })
-      .catch(() => this.$router.push('/'))
+    this.connectToChannel(to.params.id)
     next()
   },
 
   beforeDestroy: function () {
     this.$store.dispatch('rooms/leaveChannel')
+  },
+
+  methods: {
+    connectToChannel: function (roomId) {
+      this.$store
+      .dispatch('rooms/connectToChannel', { roomId: roomId })
+      .catch(() => {
+        this.$router.push('/')
+      })
+    }
   }
 }
 </script>
