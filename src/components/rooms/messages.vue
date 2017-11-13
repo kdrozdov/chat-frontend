@@ -36,7 +36,7 @@ export default {
 
   computed: {
     messages: function () {
-      return this.$store.state.rooms.messages.reverse()
+      return this.$store.state.rooms.messages.slice().reverse()
     },
 
     isLoading: function () {

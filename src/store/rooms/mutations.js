@@ -55,7 +55,7 @@ export const leaveRoom = (state) => {
   state.presentUsers = []
 }
 
-export const addMessage = (state, params) => {
+export const addNewMessage = (state, params) => {
   let date = params.message.key
   let index = state.messageIndexes[date]
   if (index >= 0) {
@@ -66,21 +66,21 @@ export const addMessage = (state, params) => {
   }
 }
 
-export const addMessages = (state, params) => {
-  let first = params.messages[0]
-  if (!first) { return }
+export const addOlderMessages = (state, params) => {
+  let olderMessages = params.messages
+  let last = olderMessages[olderMessages.length - 1]
+  if (!last) { return }
 
-  let index = state.messageIndexes[first.date]
+  let index = state.messageIndexes[last.date]
   if (index >= 0) {
-    params.messages.shift()
+    olderMessages.pop()
     state.messages[index].values = [
-      ...first.values,
+      ...last.values,
       ...state.messages[index].values
     ]
   }
-
-  params.messages.forEach((item) => {
-    index = state.messages.push(item) - 1
-    state.messageIndexes[item.date] = index
-  })
+  if (olderMessages.length > 0) {
+    state.messages = [...state.messages, ...olderMessages]
+    state.messageIndexes = buildMessageIndexes(state.messages)
+  }
 }

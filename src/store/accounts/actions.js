@@ -28,7 +28,6 @@ const handleAuthentication = ({ commit, dispatch }, params) => {
     { userId: params.data.id },
     { root: true }
   )
-  // connectToSocket({ commit: commit }, { token: params.meta.token })
 }
 
 export const login = (context, params) => {

@@ -46,7 +46,7 @@ export const connectToChannel = ({ commit, rootState }, params) => {
     })
 
     channel.on('message_created', (message) => {
-      commit('addMessage', { message: message })
+      commit('addNewMessage', { message: message })
     })
 
     channel.join()
@@ -84,7 +84,7 @@ const syncPresentUsers = (commit, presences) => {
 }
 
 export const loadOlderMessages = ({ commit, state }, params) => {
-  let dateMessages = state.messages[0]
+  let dateMessages = state.messages[state.messages.length - 1]
   if (!dateMessages) { return }
   let lastSeenId = dateMessages.values[0].id
 
@@ -92,7 +92,7 @@ export const loadOlderMessages = ({ commit, state }, params) => {
   commit('setLoadingOlderMessages', { loadingOlderMessages: true })
   return axios.get(url)
     .then((response) => {
-      commit('addMessages', { messages: response.data.data })
+      commit('addOlderMessages', { messages: response.data.data })
       commit('setLoadingOlderMessages', { loadingOlderMessages: false })
     })
 }
