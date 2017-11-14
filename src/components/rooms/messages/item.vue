@@ -5,10 +5,11 @@
       .message__info
         b.message__author {{ message.user.username }}
         time.message__time {{ time }}
-      .message__text {{ message.text }}
+      .message__text(v-html="text")
 </template>
 
 <script>
+import linkifyHtml from 'linkifyjs/html'
 import moment from 'moment'
 import Avatar from './avatar'
 
@@ -24,6 +25,10 @@ export default {
   computed: {
     time: function () {
       return moment(this.message.inserted_at).format('h:mm A')
+    },
+
+    text: function () {
+      return linkifyHtml(this.message.text, { defaultProtocol: 'https' })
     }
   }
 }

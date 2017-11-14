@@ -20,6 +20,7 @@
     "expose-loader": "^0.7.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "linkifyjs": "^2.1.5",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "moment": "^2.19.1",
