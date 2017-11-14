@@ -1,4 +1,5 @@
 import axios from '@/lib/axios'
+import { playSound } from '@/lib/utils'
 import { Presence } from 'phoenix-socket'
 
 export const fetchAll = ({ commit }) => {
@@ -46,6 +47,7 @@ export const connectToChannel = ({ commit, rootState }, params) => {
     })
 
     channel.on('message_created', (message) => {
+      playSound()
       commit('addNewMessage', { message: message })
     })
 
