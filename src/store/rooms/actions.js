@@ -51,6 +51,11 @@ export const connectToChannel = ({ commit, rootState }, params) => {
       commit('addNewMessage', { message: message })
     })
 
+    channel.on('topic_updated', (topic) => {
+      console.log('topic udpated', topic)
+      commit('updateTopic', topic)
+    })
+
     channel.join()
       .receive('ok', (response) => {
         commit('connectedToChannel', { channel: channel, ...response })
@@ -68,6 +73,14 @@ export const leaveChannel = ({ commit, state }) => {
     commit('leaveRoom')
   }
   return new Promise((resolve) => resolve())
+}
+
+export const updateTopic = ({ commit, state }, params) => {
+  return new Promise((resolve, reject) => {
+    state.channel.push('update_topic', params.form)
+      .receive('ok', () => resolve())
+      .receive('error', () => reject(new Error()))
+  })
 }
 
 export const createMessage = ({ commit, state }, params) => {

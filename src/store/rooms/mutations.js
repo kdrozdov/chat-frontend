@@ -55,6 +55,11 @@ export const leaveRoom = (state) => {
   state.presentUsers = []
 }
 
+export const updateTopic = (state, params) => {
+  if (!state.currentRoom) { return }
+  state.currentRoom.topic = params.topic
+}
+
 export const addNewMessage = (state, params) => {
   let date = params.message.key
   let index = state.messageIndexes[date]

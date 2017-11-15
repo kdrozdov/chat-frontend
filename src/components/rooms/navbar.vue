@@ -1,16 +1,22 @@
 <template lang="pug">
   nav.room-navbar
     div {{ roomName }}
-
+    Topic
 </template>
 
 <script>
+import Topic from './navbar/topic'
+
 export default {
+  components: {
+    Topic
+  },
+
   computed: {
-    roomName: function () {
+    roomName () {
       let room = this.$store.state.rooms.currentRoom
       if (!room) { return '' }
-      return room.name
+      return `#${room.name}`
     }
   }
 }
