@@ -47,7 +47,9 @@ export const connectToChannel = ({ commit, rootState }, params) => {
     })
 
     channel.on('message_created', (message) => {
-      playSound()
+      if (message.user.email_hash !== rootState.accounts.email_hash) {
+        playSound()
+      }
       commit('addNewMessage', { message: message })
     })
 

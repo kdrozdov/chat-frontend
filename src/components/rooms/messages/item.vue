@@ -1,6 +1,6 @@
 <template lang="pug">
   .message
-    Avatar(v-bind:email="message.user.email")
+    Avatar(v-bind:email-hash="message.user.email_hash")
     .message__wrapper
       .message__info
         b.message__author {{ message.user.username }}

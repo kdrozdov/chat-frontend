@@ -11,11 +11,13 @@ export const removeSession = (state, params) => {
   axios.defaults.headers.common['Authorization'] = null
   state.token = null
   state.username = null
+  state.email_hash = null
   state.socket = null
 }
 
 export const setUser = (state, params) => {
   state.username = params.username
+  state.email_hash = params.email_hash
 }
 
 export const setSocket = (state, params) => {
