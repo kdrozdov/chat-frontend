@@ -73,17 +73,18 @@ export const addNewMessage = (state, params) => {
 
 export const addOlderMessages = (state, params) => {
   let olderMessages = params.messages
-  let last = olderMessages[olderMessages.length - 1]
-  if (!last) { return }
+  let first = olderMessages[0]
+  if (!first) { return }
 
-  let index = state.messageIndexes[last.date]
+  let index = state.messageIndexes[first.date]
   if (index >= 0) {
-    olderMessages.pop()
+    olderMessages.shift()
     state.messages[index].values = [
-      ...last.values,
+      ...first.values,
       ...state.messages[index].values
     ]
   }
+
   if (olderMessages.length > 0) {
     state.messages = [...state.messages, ...olderMessages]
     state.messageIndexes = buildMessageIndexes(state.messages)
