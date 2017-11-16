@@ -52,7 +52,6 @@ export const connectToChannel = ({ commit, rootState }, params) => {
     })
 
     channel.on('topic_updated', (topic) => {
-      console.log('topic udpated', topic)
       commit('updateTopic', topic)
     })
 
